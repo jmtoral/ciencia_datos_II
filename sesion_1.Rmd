@@ -166,6 +166,41 @@ width="700x"
 
 ---
 
+# ¿Por qué nos es relevante como politólogas?
+
+
+---
+
+
+# ¿Por qué nos es relevante como politólogas?
+
+>El lenguaje es el medio para la política y el conflicto político. *[Grimmer & Stewart (2013)](https://web.stanford.edu/~jgrimmer/tad2.pdf)*
+
+--
+
+.pull-left[
+
+<img src="img/prision-1.jpg"
+width="500x"
+/><br>
+
+]
+
+
+.pull-right[
+
+<img src="img/prision-2.jpg"
+width="450x"
+/><br>
+
+]
+
+
+
+
+
+---
+
 
 [**Berliner et al (2022)**](https://osf.io/nbqus/) utilizaron modelos de aprendizaje de máquina y *topic modeling* para estudiar 4.925 solicitudes de información.
 
@@ -288,6 +323,26 @@ width="400x"
 
 
 ---
+# Los 4 principios [Grimmer & Stewart (2013)](https://web.stanford.edu/~jgrimmer/tad2.pdf)
+
+
+1. Todos los modelos cuantitativos del lenguaje son incorrectos, pero **algunos son útiles**.
+
+--
+
+2. Los métodos cuantitativos de texto amplifican los recursos y **expanden la capacidad humana**.
+
+--
+
+3. **No hay un *mejor método*** para el análisis automatizado de texto.
+
+--
+
+4. Hay que *validar*, _validar_ y volver a **validar**.
+
+
+
+---
 
 
 # Manos a la obra
@@ -397,11 +452,14 @@ con21nl <- con21 |>
          EDAD, GENERO, PROPUESTA_1:PROPUESTA_GENERO)   
 ```
 
+
 ```{r echo=TRUE}
 
 glimpse(con21nl)
 
 ```
+
+
 
 ---
 
@@ -423,9 +481,190 @@ con21nl <- con21nl |>
 
 Vamos a pegar las tres propuestas: la **propuesta 1**, la **propuesta 2** y la **propuesta de género** (que en realidad se refiere a alguna propuesta *en materia de género o del grupo en situación de discriminación que representa*). Sobreescribiremos el objeto `con21nl` y eliminaremos lo sobrante.
 
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
+con21nl <- con21nl |> 
+  mutate(prop_pasted = str_c(  
+    PROPUESTA_1, PROPUESTA_2, PROPUESTA_GENERO, sep = " "))  |> 
+  select(-contains("PROPUESTA_")) |> #<<
+  filter(!prop_pasted == "NA")
+```
+
+---
+
+
+# Pegar propuestas en una sola
+
+Vamos a pegar las tres propuestas: la **propuesta 1**, la **propuesta 2** y la **propuesta de género** (que en realidad se refiere a alguna propuesta *en materia de género o del grupo en situación de discriminación que representa*). Sobreescribiremos el objeto `con21nl` y eliminaremos lo sobrante.
+
 ```{r echo=T, message=FALSE, warning=FALSE, eval=T}
 con21nl <- con21nl |> 
   mutate(prop_pasted = str_c(  
     PROPUESTA_1, PROPUESTA_2, PROPUESTA_GENERO, sep = " "))  |> 
-  select(-contains("PROPUESTA_")) #<< 
+  select(-contains("PROPUESTA_")) |> 
+  filter(!prop_pasted == "NA") #<<
+```
+
+
+---
+
+
+# Pegar propuestas en una sola
+
+Así se vería las primeras propuestas.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+con21nl$prop_pasted[1:5]
+```
+
+
+---
+
+
+# *Desanidar* los tokens
+
+Vamos a contar las palabras usando nuestra *navaja suiza* y su comando estrella `unnest_tokens`.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", #<<
+    input = "prop_pasted", 
+    token = "words"
+  )
+```
+
+
+---
+
+
+# *Desanidar* los tokens
+
+Vamos a contar las palabras usando nuestra *navaja suiza* y su comando estrella `unnest_tokens`.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", #<<
+    token = "words"
+  )
+```
+
+
+
+
+---
+
+
+# *Desanidar* los tokens
+
+Vamos a contar las palabras usando nuestra *navaja suiza* y su comando estrella `unnest_tokens`.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" #<<
+  )
+```
+
+```{r echo=F, message=FALSE, warning=FALSE, eval=T}
+pal_con21_nl <- con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" #<<
+  )
+```
+
+
+---
+
+
+# El resultado es la *tokenización* de la tabla
+
+```{r echo=F, message=FALSE, warning=FALSE, eval=T}
+pal_con21_nl |> 
+  head(8)
+```
+
+
+---
+
+
+# Contamos los tokens y ordenamos de mayor a menor
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |> 
+  count(palabras, sort = T)  #<<
+  
+```
+
+
+---
+
+
+# Contamos los tokens y ordenamos de mayor a menor
+
+```{r echo=F, message=FALSE, warning=FALSE, eval=T}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |> 
+  count(palabras, sort = T) |> 
+  head(10)
+```
+
+
+---
+
+
+# Primer dolor de cabeza: las *stopwords*
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+
+tm::stopwords("es")[1:50]
+
+```
+
+---
+
+
+# Filtramos las *stop words*
+
+```{r echo=F, message=FALSE, warning=FALSE, eval=F}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |> 
+  count(palabras, sort = T) |> 
+  filter(!palabras %in% tm::stopwords("es")) #<<
+```
+
+
+---
+
+
+# Tenemos las 10 palabras más usadas en las propuestas para NL
+
+```{r echo=F, message=FALSE, warning=FALSE, eval=T}
+con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |> 
+  count(palabras, sort = T) |> 
+  filter(!palabras %in% tm::stopwords("es")) |> 
+  head(10)
 ```
