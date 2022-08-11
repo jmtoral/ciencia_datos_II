@@ -640,7 +640,7 @@ tm::stopwords("es")[1:50]
 
 # Filtramos las *stop words*
 
-```{r echo=F, message=FALSE, warning=FALSE, eval=F}
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
 con21nl |> 
   unnest_tokens( 
     output = "palabras", 

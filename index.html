@@ -659,6 +659,16 @@ tm::stopwords("es")[1:50]
 # Filtramos las *stop words*
 
 
+```r
+con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+  count(palabras, sort = T) |&gt; 
+* filter(!palabras %in% tm::stopwords("es"))
+```
 
 
 ---
