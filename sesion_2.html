@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análisis cuantitativo de texto</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Manuel Toral" />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="css/nhsr.css" type="text/css" />
+    <link rel="stylesheet" href="css/nhsr-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: right, middle, inverse, titular
+background-image: url(img/red.png)
+background-size: contain
+background-position: -40% 40%
+
+
+# Análisis cuantitativo de texto 
+## **Obtener *insights* de los datos**
+### Manuel Toral
+### 23 de agosto de 2022
+
+[<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Repositorio](https://github.com/jmtoral/ciencia_datos_II)
+&lt;br&gt;[<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M528 32H144c-26.51 0-48 21.49-48 48v256c0 26.51 21.49 48 48 48H528c26.51 0 48-21.49 48-48v-256C576 53.49 554.5 32 528 32zM223.1 96c17.68 0 32 14.33 32 32S241.7 160 223.1 160c-17.67 0-32-14.33-32-32S206.3 96 223.1 96zM494.1 311.6C491.3 316.8 485.9 320 480 320H192c-6.023 0-11.53-3.379-14.26-8.75c-2.73-5.367-2.215-11.81 1.332-16.68l70-96C252.1 194.4 256.9 192 262 192c5.111 0 9.916 2.441 12.93 6.574l22.35 30.66l62.74-94.11C362.1 130.7 367.1 128 373.3 128c5.348 0 10.34 2.672 13.31 7.125l106.7 160C496.6 300 496.9 306.3 494.1 311.6zM456 432H120c-39.7 0-72-32.3-72-72v-240C48 106.8 37.25 96 24 96S0 106.8 0 120v240C0 426.2 53.83 480 120 480h336c13.25 0 24-10.75 24-24S469.3 432 456 432z"/></svg> Diapositivas ]()
+
+
+---
+name: saludo
+layout: false
+class: inverse, middle, left
+
+# El plan del día de hoy
+
+- Utilizaremos la base *Conóceles 2021* para aprender los básicos del análisis de texto.
+- Limpiaremos esta tabla para hacer la útil 😞
+- Eliminaremos *palabras vacías* y sabremos por qué.
+- Haremos conteos de los términos más frecuentes.
+- Haremos conteos por grupos.
+
+
+
+---
+
+# 1. Invoca las biblitoecas que usamos la vez pasada
+
+Adicionalmente, también instala (si es el caso) e invoca el paquete `janitor`.
+
+
+```r
+library(tidyverse) # Un viejo conocido
+library(readxl) # Porque una vida sin excel no es vida...
+library(janitor) # Limpieza
+
+library(tidytext) # Una navaja suiza para el procesamiento de texto
+library(quanteda) # Herramientas poderosas de análisis de texto
+library(tm) # El estándar para el trabajo de minería de texto
+
+library(wordcloud) # Gráficas de nubes de palabras
+```
+
+
+---
+
+# 2. Importa los datos que descargamos la vez pasada
+
+Ya no es necesario descargar de nuevo el archivo, pero dejo el código para hacerlo por si es de utilidad.
+
+
+```r
+# El enlace directo al .xls
+url &lt;- "https://candidaturas2021.ine.mx/documentos/descargas/baseDatosCandidatos.xls" 
+
+#Descargar en la carpeta "datos"
+download.file(url, destfile = "data/baseDatosCandidatos.xls", mode = "wb")
+
+# Leer datos
+*con21 &lt;- read_excel("data/baseDatosCandidatos.xls")
+```
+
+
+---
+
+# 3. Filtros y selección
+
+Al igual que la vez pasada, utilizaremos *Nuevo León* para este ejercicio. No obstante, te invito *encarecidamente* a que selecciones otra entidad. Igual y llegas a resultados interesantes.
+
+
+Adicionalmente, vamos a filtrar sólo a las personas candidatas *PROPIETARIAS*.
+
+
+```r
+con21nl &lt;- con21 |&gt; 
+  clean_names() |&gt; 
+  filter(entidad == "NUEVO LEÓN") |&gt; 
+* filter(tipo_candidato == "PROPIETARIO") |&gt;
+  select(partido_coalicion, candidatura, distrito:nombre_candidato,
+         edad, genero, propuesta_1:propuesta_genero)
+```
+
+---
+
+# 4. ¿Quién no respondió?
+
+Nada más para quemarles, veamos quién no llenó *ni una* propuesta.
+
+
+```r
+pereza &lt;- con21nl |&gt; 
+  mutate(
+    pereza = case_when(
+      is.na(propuesta_1) &amp; is.na(propuesta_2) &amp; is.na(propuesta_genero) ~ "sí",
+      TRUE ~ "no"
+    )
+  ) |&gt; 
+* filter(pereza == "sí")
+```
+
+
+---
+
+# 4. ¿Quién no respondió?
+
+Nada más para quemarles, veamos quién no llenó *ni una* propuesta.
+
+
+```
+## # A tibble: 6 × 3
+##   partido_coalicion           distrito         nombre_candidato              
+##   &lt;chr&gt;                       &lt;chr&gt;            &lt;chr&gt;                         
+## 1 REDES SOCIALES PROGRESISTAS 2-APODACA        JOSE ULISES TREVIÑO GARCIA    
+## 2 REDES SOCIALES PROGRESISTAS 5-MONTERREY      MA MAGDALENA CUEVAS BETANCOURT
+## 3 REDES SOCIALES PROGRESISTAS 6-MONTERREY      ADRIANA LEONOR DIAZ GARCIA    
+## 4 JUNTOS HACEMOS HISTORIA     8-GUADALUPE      YARELY GUADALUPE VERA GRIMALDO
+## 5 JUNTOS HACEMOS HISTORIA     10-MONTERREY     SUSANA ESCALANTE CASTILLO     
+## 6 REDES SOCIALES PROGRESISTAS 12-BENITO JUAREZ ISMAEL GUERRA PADILLA
+```
+
+
+
+---
+
+# 5. Pegar propuestas en una sola
+
+Como la vez pasada, concatenaremos las 3 propuestas en una sola, pero me voy a deshacer de quienes no participaron.
+
+
+```r
+con21nl &lt;- con21nl |&gt; 
+* filter(!num_lista_o_formula %in% pereza$num_lista_o_formula)
+```
+
+---
+
+# 5. Pegar propuestas en una sola
+
+Como la vez pasada, concatenaremos las 3 propuestas en una sola, pero me voy a deshacer de quienes no participaron.
+
+
+```r
+con21nl &lt;- con21nl |&gt; 
+  filter(!num_lista_o_formula %in% pereza$num_lista_o_formula) |&gt; 
+* mutate(prop_pasted = str_c(
+*   propuesta_1, propuesta_2, propuesta_genero, sep = " ")
+*   )
+```
+
+---
+
+# 6. *Desanidar* los tokens
+
+Como vimos la vez pasada, desanidaremos los *tokens*. Adicional, vamos a hacer un conteo por grupos.
+Me interesa que estudiemos las diferencias entre partidos políticos.
+
+
+```r
+con21nl &lt;-  con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+* count(partido_coalicion, palabras, sort = T)
+```
+
+
+---
+
+# 7. Contemos las plabras totales y únicas
+
+
+
+
+```r
+con21nl &lt;-  con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+  count(partido_coalicion,palabras, sort = T) |&gt; 
+* group_by(partido_coalicion) |&gt;
+* mutate(total = sum(n)) |&gt; #Totales por partido
+* mutate(unicas = n()) # Únicas por partido
+```
+
+
+---
+
+# Proporción de únicas con respecto al total 
+
+
+
+```r
+con21nl &lt;-  con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+  count(partido_coalicion, palabras, sort = T) |&gt; 
+  group_by(partido_coalicion) |&gt; 
+  mutate(total = sum(n)) |&gt; 
+  mutate(unicas = n()) |&gt; 
+* mutate(prop_unicas = unicas/total)
+```
+
+---
+class: inverse, middle, center
+
+# 8. Ley de zipf
+
+
+
+&lt;div class="center"&gt;
+&lt;img src="img/zipf_gen.png"
+width="600x"
+/&gt;&lt;br&gt;
+&lt;/div&gt;
+
+(Obtenido de [Wikipedia](https://en.wikipedia.org/wiki/Zipf%27s_law#/media/File:Zipf_30wiki_en_labels.png))
+
+---
+
+# 8. Ley de zipf
+
+
+.pull-left[
+
+
+```r
+con21nl |&gt; 
+  mutate(rank = row_number(), `term frequency` = n/9975) %&gt;% 
+  ggplot(aes(rank,
+             `term frequency`)) + 
+  geom_line(size = 1.1,
+            alpha = 0.8, 
+            show.legend = FALSE) + 
+  labs(title=  "Propuestas de Conóceles en NL") +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+]
+
+.pull-right[
+
+
+&lt;img src="img/zipf_con.png"
+width="800x"
+/&gt;&lt;br&gt;
+
+]
+
+
+
+
+---
+
+# 9. Quitar las palabras vacías
+
+
+
+```r
+pal_count_nl &lt;-  con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+  count(partido_coalicion, palabras, sort = T) |&gt; 
+  group_by(partido_coalicion) |&gt; 
+  mutate(total = sum(n)) |&gt; 
+  mutate(unicas = n()) |&gt; 
+  mutate(prop_unicas = unicas/total) |&gt; 
+* filter(!palabras %in% tm::stopwords("es"))
+```
+
+
+---
+
+# 9. Las 5 palabras más frecuentes por grupo
+
+
+```r
+pal_count_nl &lt;-  con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+  count(partido_coalicion, palabras, sort = T) |&gt; 
+  group_by(partido_coalicion) |&gt; 
+  mutate(total = sum(n)) |&gt; 
+  mutate(unicas = n()) |&gt; 
+  mutate(prop_unicas = unicas/total) |&gt; 
+  filter(!palabras %in% tm::stopwords("es")) |&gt; 
+  filter(!is.na(palabras)) |&gt; 
+* top_n(5, n) |&gt;
+  ungroup()
+```
+
+
+---
+
+# 10. Reemplazar nombres de los partidos
+
+
+```r
+pal_count_nl &lt;-  pal_count_nl |&gt; 
+  mutate(siglas = case_when(
+    partido_coalicion == "FUERZA POR MÉXICO" ~ "FxM",
+    partido_coalicion == "JUNTOS HACEMOS HISTORIA" ~ "JHH",
+    partido_coalicion == "MOVIMIENTO CIUDADANO" ~ "MC",
+    partido_coalicion == "PARTIDO ACCIÓN NACIONAL" ~ "PAN",
+    partido_coalicion == "PARTIDO DE LA REVOLUCIÓN DEMOCRÁTICA" ~ "PRD",
+    partido_coalicion == "PARTIDO DEL TRABAJO" ~ "PT",
+    partido_coalicion == "PARTIDO ENCUENTRO SOLIDARIO" ~ "PES",
+    partido_coalicion == "PARTIDO REVOLUCIONARIO INSTITUCIONAL" ~ "PRI",
+    partido_coalicion == "PARTIDO VERDE ECOLOGISTA DE MÉXICO" ~ "PVEM",
+    partido_coalicion == "REDES SOCIALES PROGRESISTAS" ~ "RSP",
+    TRUE ~ partido_coalicion
+  ))
+```
+
+
+---
+
+# Resultados
+
+
+```r
+pal_count_nl |&gt; 
+  ggplot(aes(
+    x= n,
+    y= reorder_within(palabras, n, siglas),
+    fill = siglas
+  )) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~siglas, scales = "free") +
+  guides(fill="none") +
+  labs(title= "Palabras más frecuentes por partido")
+```
+
+---
+
+# Resultados
+
+![](sesion_2_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+
+
+---
+
+# Resultados
+
+
+```r
+pal_count_nl |&gt; 
+  distinct(partido_coalicion, prop_unicas) |&gt; 
+  mutate(prop_unicas = round(prop_unicas, 2)) |&gt; 
+  arrange(-prop_unicas) |&gt; 
+  ggplot(aes(
+    x = prop_unicas,
+    y = reorder(partido_coalicion, prop_unicas)
+  )) +
+  geom_col() +
+  labs(x= "Proporción únicas sobre el total",
+       y= "Partidos",
+       title="Proporción de palabras únicas por partido")
+```
+
+
+
+---
+
+# Resultados
+
+![](sesion_2_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!--Hat-tip: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/-->
+<style>
+.logo {
+  background-image: url(img/logo-title-slide.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 110px;
+  height: 128px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
