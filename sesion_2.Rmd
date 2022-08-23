@@ -234,7 +234,7 @@ con21nl <-  con21nl |>
 
 ```{r echo=T, message=FALSE, warning=FALSE, eval=F}
 
-con21nl <-  con21nl |> 
+pal_count_nl <-  con21nl |> 
   unnest_tokens( 
     output = "palabras", 
     input = "prop_pasted", 
