@@ -219,7 +219,7 @@ con21nl <-  con21nl |>
     input = "prop_pasted", 
     token = "words" 
   ) |> 
-  count(partido_coalicion,palabras, sort = T) |> 
+  count(partido_coalicion, palabras, sort = T) |> 
   group_by(partido_coalicion) |> #<<
   mutate(total = sum(n)) |> #Totales por partido #<<
   mutate(unicas = n()) # Únicas por partido #<<

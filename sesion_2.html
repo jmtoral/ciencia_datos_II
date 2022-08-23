@@ -209,7 +209,7 @@ con21nl &lt;-  con21nl |&gt;
     input = "prop_pasted", 
     token = "words" 
   ) |&gt; 
-  count(partido_coalicion,palabras, sort = T) |&gt; 
+  count(partido_coalicion, palabras, sort = T) |&gt; 
 * group_by(partido_coalicion) |&gt;
 * mutate(total = sum(n)) |&gt; #Totales por partido
 * mutate(unicas = n()) # Únicas por partido
@@ -223,7 +223,7 @@ con21nl &lt;-  con21nl |&gt;
 
 
 ```r
-con21nl &lt;-  con21nl |&gt; 
+pal_count_nl &lt;-  con21nl |&gt; 
   unnest_tokens( 
     output = "palabras", 
     input = "prop_pasted", 
