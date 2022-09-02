@@ -21,7 +21,7 @@ library(wordcloud) # Gráficas de nubes de palabras
 
 # 2. Datos ----------------------------------------------------------------
 
-con21 <- read_excel("TEC/LTP_TC2002B_570/data/baseDatosCandidatos.xls")
+con21 <- read_excel("data/baseDatosCandidatos.xls")
 
 
 
