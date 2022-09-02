@@ -211,3 +211,51 @@ bi_nl21_pp |>
   labs(title= "Palabras más frecuentes por partido",
        y="Palabras", x= "Frecuencia")
 ```
+
+---
+name: drama
+layout: false
+class: inverse, middle, left
+
+# TF-IDF: Term frequency – Inverse document frequency
+
+$$idf(\text{término}) = \ln{\left(\frac{n_{\text{documentos}}}{n_{\text{documentos que contienen el término}}}\right)}$$
+
+---
+# ¿Qué es un corpus?
+
+![https://diatoz.com/blogs/nlp-basics](img/jerar.png)
+
+---
+# ¿Por qué necesito un TF-IDF?
+
+El estadístico *tf-idf* mide qué tan importante es una palabra con respecto a un corpus.
+
+
+---
+# 1. Calcular el TF-IDF
+
+Traigo a mi vieja tabla conocida.
+
+```{r message=FALSE, warning=FALSE, echo=T}
+con21nl <-  read_csv(
+  "https://raw.githubusercontent.com/jmtoral/ciencia_datos_II/main/data/con21nl.csv"
+  )
+```
+
+
+---
+# 2. Conte de tokens por documento
+
+
+
+```{r message=FALSE, warning=FALSE, echo=T}
+pal_count_nl <-  con21nl |> 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_c", 
+    token = "words" 
+  ) |> 
+  count(partido_coalicion, palabras, sort = T) |>
+  filter(!palabras %in% tm::stopwords("es"))
+```
