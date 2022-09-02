@@ -206,6 +206,118 @@ layout: false
 class: inverse, middle, left
 
 # TF-IDF: Term frequency – Inverse document frequency
+
+`$$idf(\text{término}) = \ln{\left(\frac{n_{\text{documentos}}}{n_{\text{documentos que contienen el término}}}\right)}$$`
+
+---
+# ¿Qué es un corpus?
+
+![https://diatoz.com/blogs/nlp-basics](img/jerar.png)
+
+---
+# ¿Por qué necesito un TF-IDF?
+
+El estadístico *tf-idf* mide qué tan importante es una palabra con respecto a un corpus.
+
+
+---
+# 1. Calcular el TF-IDF
+
+Traigo a mi vieja tabla conocida.
+
+
+```r
+con21nl &lt;-  read_csv(
+  "https://raw.githubusercontent.com/jmtoral/ciencia_datos_II/main/data/con21nl.csv"
+  )
+```
+
+
+---
+# 2. Conteo de tokens por documento
+
+
+```r
+pal_count_nl &lt;-  con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_c", 
+    token = "words" 
+  ) |&gt; 
+  count(partido_coalicion, palabras, sort = T) |&gt;
+  filter(!palabras %in% tm::stopwords("es"))
+```
+
+
+---
+# 3. Cálcular el TF-IDF
+
+
+```r
+pal_count_nl |&gt; 
+  bind_tf_idf(
+*   palabras,
+*   partido_coalicion,
+*   n) |&gt;
+  arrange(-tf_idf) 
+```
+
+```
+## # A tibble: 3,958 × 6
+##    partido_coalicion                  palabras       n     tf   idf tf_idf
+##    &lt;chr&gt;                              &lt;chr&gt;      &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 PARTIDO VERDE ECOLOGISTA DE MÉXICO refugios       7 0.0147  2.40 0.0353
+##  2 PARTIDO DEL TRABAJO                reciban        2 0.0238  1.30 0.0309
+##  3 PARTIDO DEL TRABAJO                agresor        1 0.0119  2.40 0.0285
+##  4 PARTIDO DEL TRABAJO                alcohol        1 0.0119  2.40 0.0285
+##  5 PARTIDO DEL TRABAJO                algun          1 0.0119  2.40 0.0285
+##  6 PARTIDO DEL TRABAJO                aquel          1 0.0119  2.40 0.0285
+##  7 PARTIDO DEL TRABAJO                autoempleo     1 0.0119  2.40 0.0285
+##  8 PARTIDO DEL TRABAJO                capacite       1 0.0119  2.40 0.0285
+##  9 PARTIDO DEL TRABAJO                dejar          1 0.0119  2.40 0.0285
+## 10 PARTIDO DEL TRABAJO                deserción      1 0.0119  2.40 0.0285
+## # … with 3,948 more rows
+```
+
+
+---
+# 4. Cálcular el TF-IDF
+
+
+```r
+tdidf_nl &lt;- pal_count_nl |&gt; 
+  bind_tf_idf(
+    palabras, 
+    partido_coalicion, 
+    n) |&gt; 
+  arrange(-tf_idf) |&gt; 
+  group_by(partido_coalicion) |&gt; 
+  top_n(5, tf_idf )
+```
+
+---
+# 5. Vizes
+
+
+```r
+tdidf_nl  |&gt; 
+  filter(partido_coalicion %in% 
+           c("MOVIMIENTO CIUDADANO", "FUERZA POR MÉXICO",
+             "JUNTOS HACEMOS HISTORIA", "MORENA")) |&gt; 
+  ggplot(aes(
+    x=  tf_idf,
+    y= reorder_within(palabras,  tf_idf, partido_coalicion),
+    fill = partido_coalicion
+  )) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~partido_coalicion, scales = "free") +
+  guides(fill="none") +
+  labs(title= "Palabras más frecuentes por partido",
+       y="Palabras", x= "Frecuencia")
+```
+
+![](sesion_3_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

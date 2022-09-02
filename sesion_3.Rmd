@@ -245,9 +245,7 @@ con21nl <-  read_csv(
 
 
 ---
-# 2. Conte de tokens por documento
-
-
+# 2. Conteo de tokens por documento
 
 ```{r message=FALSE, warning=FALSE, echo=T}
 pal_count_nl <-  con21nl |> 
@@ -258,4 +256,53 @@ pal_count_nl <-  con21nl |>
   ) |> 
   count(partido_coalicion, palabras, sort = T) |>
   filter(!palabras %in% tm::stopwords("es"))
+```
+
+
+---
+# 3. Cálcular el TF-IDF
+
+```{r message=FALSE, warning=FALSE, echo=T}
+pal_count_nl |> 
+  bind_tf_idf(
+    palabras, #<<
+    partido_coalicion, #<< 
+    n) |>  #<<
+  arrange(-tf_idf) 
+```
+
+
+---
+# 4. Cálcular el TF-IDF
+
+```{r message=FALSE, warning=FALSE, echo=T}
+tdidf_nl <- pal_count_nl |> 
+  bind_tf_idf(
+    palabras, 
+    partido_coalicion, 
+    n) |> 
+  arrange(-tf_idf) |> 
+  group_by(partido_coalicion) |> 
+  top_n(5, tf_idf )
+```
+
+---
+# 5. Vizes
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+tdidf_nl  |> 
+  filter(partido_coalicion %in% 
+           c("MOVIMIENTO CIUDADANO", "FUERZA POR MÉXICO",
+             "JUNTOS HACEMOS HISTORIA", "MORENA")) |> 
+  ggplot(aes(
+    x=  tf_idf,
+    y= reorder_within(palabras,  tf_idf, partido_coalicion),
+    fill = partido_coalicion
+  )) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~partido_coalicion, scales = "free") +
+  guides(fill="none") +
+  labs(title= "Palabras más frecuentes por partido",
+       y="Palabras", x= "Frecuencia")
 ```
