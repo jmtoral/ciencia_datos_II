@@ -21,7 +21,7 @@ library(wordcloud) # Gráficas de nubes de palabras
 
 # 2. Datos ----------------------------------------------------------------
 
-con21 <- read_excel("data/baseDatosCandidatos.xls")
+con21 <- read_excel("TEC/LTP_TC2002B_570/data/baseDatosCandidatos.xls")
 
 
 # 3. Filtros y Select ------------------------------------------------------
@@ -55,11 +55,15 @@ pereza  |>
 
 # Pegar propuestas --------------------------------------------------------------
 
-con21nl <- con21nl |> 
+
+con21nl_clean <- con21nl |> 
   filter(!num_lista_o_formula %in% pereza$num_lista_o_formula) |> 
-  mutate(prop_pasted = str_c(   #<< 
-    propuesta_1, propuesta_2, propuesta_genero, sep = " ")  #<< 
-  ) 
+  mutate(propuesta_1 = str_replace_na(propuesta_1, replacement = "")) |> 
+  mutate(propuesta_2 = str_replace_na(propuesta_2, replacement = "")) |> 
+  mutate(propuesta_genero = str_replace_na(propuesta_genero, replacement = "")) |> 
+  mutate(prop_c = str_c(
+    propuesta_1, propuesta_2, propuesta_genero, sep = " "
+  ))
 
 
 
