@@ -1,0 +1,213 @@
+---
+title: "Análisis cuantitativo de texto"
+subtitle: "Obtener *insights* de los datos II"
+author: "Manuel Toral"
+institute: "Tec de Montrerrey"
+date: "23 de agosto de 2022"
+output: 
+  xaringan::moon_reader:
+    css: 
+      - default
+      - css/nhsr.css
+      - css/nhsr-fonts.css
+    lib_dir: libs
+    seal: false
+    nature:
+      highlightStyle: googlecode
+      highlightLines: true
+      highlightLanguage: ["r"]
+      countIncrementalSlides: false
+      ratio: "16:9"
+    includes:
+      after_body: [css/insert-logo.html]
+---
+
+
+
+```{r setup, include = FALSE}
+
+# load packages
+library(knitr)
+library(tidyverse)
+library(fontawesome)
+library(xaringanExtra)
+
+# set default options
+opts_chunk$set(echo = FALSE,
+               fig.width = 7.252,
+               fig.height = 4,
+               dpi = 300)
+
+xaringanExtra::use_tile_view()
+xaringanExtra::use_panelset()
+```
+
+class: right, middle, inverse, titular
+background-image: url(https://github.com/mxvscorrupcion/trimestre_economico/raw/master/03_graficas/red.png)
+background-size: contain
+background-position: -60% 40%
+
+
+# `r rmarkdown::metadata$title` 
+## **`r rmarkdown::metadata$subtitle`**
+### `r rmarkdown::metadata$author`
+### `r rmarkdown::metadata$date`
+
+[`r fontawesome::fa("github")` Repositorio](https://github.com/jmtoral/ciencia_datos_II)
+<br>[`r fontawesome::fa("images")` Diapositivas ]()
+
+
+---
+name: saludo
+layout: false
+class: inverse, middle, left
+
+# El plan del día de hoy
+
+- Utilizaremos la base *Conóceles 2021*  `r emo::ji("disappointed")` (ya es la última, lo juro) para aprender a extraer bigramas y tf-idfs.
+
+
+
+---
+
+# 1. Invoca las biblitoecas que usamos la vez pasada
+
+Adicionalmente, también instala (si es el caso) e invoca el paquete `igraph` y `ggraph`.
+
+```{r message=FALSE, warning=FALSE, echo=T}
+library(tidyverse) # Un viejo conocido
+library(readxl) # Porque una vida sin excel no es vida...
+library(janitor) # Limpieza
+
+library(tidytext) # Una navaja suiza para el procesamiento de texto
+library(quanteda) # Herramientas poderosas de análisis de texto
+library(tm) # El estándar para el trabajo de minería de texto
+
+library(igraph) # Análisis de redes
+library(ggraph) # Visualizar redes
+```
+
+
+---
+# 2. Importa los datos que descargamos la vez pasada
+
+Para ahorrar tiempo, puedes leer directamente mi archivo.
+
+```{r message=FALSE, warning=FALSE, echo=T}
+con21nl <-  read_csv(
+  "https://raw.githubusercontent.com/jmtoral/ciencia_datos_II/main/data/con21nl.csv"
+  )
+
+```
+
+
+---
+
+# 3. ¿Qué es in bigrama?
+
+
+Un bigrama un tipo de *n-grama* que se compone de un conjunto de *dos* cadenas de texto. 
+
+<br></br>
+
+$$P(W_n|W_{n-1}) = \frac{P(W_n, W_{n-1})}{P(W_{n-1})}$$
+
+---
+# 4 ¿Cómo obtengo los bigramas?
+
+Con `unnest_tokens`, naturalmente.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=F}
+bi_nl21 <- con21nl |> 
+  unnest_tokens(
+    output = "bigram", #<<
+    input = "prop_c",
+    token = "ngrams", #<<
+    n = 2 #<<
+  )
+```
+
+---
+# 5. Doble dolor de cabeza: las palabras vacías
+
+Tenemos que eliminar las palabras vacías de ambas columnas.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+bi_nl21 <- con21nl |> 
+  unnest_tokens(
+    output = "bigram",
+    input = "prop_c",
+    token = "ngrams", 
+    n = 2 
+  ) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") #<<
+```
+
+
+
+---
+# 5. Doble dolor de cabeza: las palabras vacías
+
+Tenemos que eliminar las palabras vacías de ambas columnas.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+bi_nl21 <- con21nl |> 
+  unnest_tokens(
+    output = "bigram",
+    input = "prop_c",
+    token = "ngrams", 
+    n = 2 
+  ) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>% #<< Separamos
+  filter(!word1 %in% tm::stopwords("es")) %>% #<< Limpiamos
+  filter(!word2 %in% tm::stopwords("es"))#<< Limpiamos
+```
+
+
+
+---
+# 6. Contabilizamos los bigramas más frecuentes
+
+La estrategia es igual que la vez anterior.
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+bi_nl21_count <- bi_nl21 |> 
+  unite(bigram, word1, word2, sep = " ") |> #<< Unimos
+  count(bigram, sort = T) #<< Contamos
+```
+
+---
+# 7. Contabilizamos los bigramas más frecuentes por partido
+
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+bi_nl21_pp <- bi_nl21 |> 
+  unite(bigram, word1, word2, sep = " ") |> 
+  count(partido_coalicion, bigram, sort = T)  |>  #<<
+  group_by(partido_coalicion) |> #<<
+  top_n(5) #<<
+```
+
+
+
+---
+# 8. Visualizar
+
+
+```{r echo=T, message=FALSE, warning=FALSE, eval=T}
+bi_nl21_pp |> 
+  filter(partido_coalicion %in% 
+           c("MOVIMIENTO CIUDADANO", "FUERZA POR MÉXICO",
+             "JUNTOS HACEMOS HISTORIA")) |> 
+  ggplot(aes(
+    x= n,
+    y= reorder_within(bigram, n, partido_coalicion),
+    fill = partido_coalicion
+  )) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~partido_coalicion, scales = "free") +
+  guides(fill="none") +
+  labs(title= "Palabras más frecuentes por partido",
+       y="Palabras", x= "Frecuencia")
+```
