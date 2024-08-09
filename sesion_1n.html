@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>¿Qué es la minería de datos?</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Manuel Toral" />
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/panelset-0.3.0/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.3.0/panelset.js"></script>
+    <link rel="stylesheet" href="css/nhsr.css" type="text/css" />
+    <link rel="stylesheet" href="css/nhsr-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: right, middle, inverse, titular
+background-image: url(img/palabra.jpg)
+background-size: contain
+background-position: -40% 80%
+
+
+# ¿Qué es la minería de datos? 
+## **...y por qué debería importarnos**
+### Manuel Toral
+### 09 de agosto de 2024
+
+[<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Repositorio](https://github.com/jmtoral/ciencia_datos_II)
+&lt;br&gt;[<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M160 80H512c8.8 0 16 7.2 16 16V320c0 8.8-7.2 16-16 16H490.8L388.1 178.9c-4.4-6.8-12-10.9-20.1-10.9s-15.7 4.1-20.1 10.9l-52.2 79.8-12.4-16.9c-4.5-6.2-11.7-9.8-19.4-9.8s-14.8 3.6-19.4 9.8L175.6 336H160c-8.8 0-16-7.2-16-16V96c0-8.8 7.2-16 16-16zM96 96V320c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120V344c0 75.1 60.9 136 136 136H456c13.3 0 24-10.7 24-24s-10.7-24-24-24H136c-48.6 0-88-39.4-88-88V120zm208 24a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg> diapositivas ]()
+
+
+---
+name: saludo
+layout: false
+class: inverse, middle, center
+
+# Sobre mí
+
+&lt;img style="border-radius: 50%;" src="https://manueltoral.netlify.app/images/foto.jpeg" width="150px"/&gt;
+
+## Manuel Toral 🇲🇽
+
+### Científico de datos
+
+[<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg> jmtoral@tec.mx](jmtoral@tec.mx)
+[<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/></svg> manueltoral.studio](https://manueltoral.studio)
+[<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> @jmtoral](https://github.com/jmtoral)
+
+
+
+---
+class: left
+
+# Acerca de ti
+
+- Eres usuaria principiante de `R` 👩🏽‍💻
+
+--
+
+- Conoces herramientas visualización y análisis de datos  📊
+
+--
+- Te interesan las ciencias sociales (en partícular la ciencia política)  🏛 
+
+--
+
+- Te gustaría trabajar en el sector público o en la interacción de éste con el sector privado 👩🏽‍💼
+
+--
+
+# Hoy quiero
+
+- Dar una breve introducción sobre qué es la *minería de datos¨*
+ ... y sobre por qué nos debe importar.
+
+
+---
+
+# "Minería" y otras *buzzwords*
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/mipuri.png"
+width="700x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+---
+
+# "Minería" y otras *buzzwords*
+
+Con *minería* reconocemos la naturaleza no estructurada del lenguaje natural. Los patrones que existen en nuestra habla y nuestra escritura no son accesibles dee manera innmediata: **se requiere de un proceso de refinación**.
+
+
+---
+
+# ¿A qué me refieron con *refinar*?
+
+--
+
+.pull-left[
+
+Pasar de esto...
+
+&lt;img src="img/ags_gob.PNG"
+width="500x"
+/&gt;&lt;br&gt;
+
+]
+
+--
+
+.pull-right[
+
+a esto.
+
+&lt;img src="img/ags_gob_pal.PNG"
+width="800x"
+/&gt;&lt;br&gt;
+
+]
+
+
+---
+
+# ¿Y para qué o qué?
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/kok.jpg"
+width="700x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+---
+
+# ¿Por qué nos es relevante como politólogas?
+
+
+---
+
+
+# ¿Por qué nos es relevante como politólogas?
+
+&gt;El lenguaje es el medio para la política y el conflicto político. *[Grimmer &amp; Stewart (2013)](https://web.stanford.edu/~jgrimmer/tad2.pdf)*
+
+--
+
+.pull-left[
+
+&lt;img src="img/prision-1.jpg"
+width="500x"
+/&gt;&lt;br&gt;
+
+]
+
+
+.pull-right[
+
+&lt;img src="img/prision-2.jpg"
+width="450x"
+/&gt;&lt;br&gt;
+
+]
+
+
+
+
+
+---
+
+
+[**Berliner et al (2022)**](https://osf.io/nbqus/) utilizaron modelos de aprendizaje de máquina y *topic modeling* para estudiar 4.925 solicitudes de información.
+
+&lt;div class="center"&gt;
+&lt;img src="img/estudio1a.PNG"
+width="800x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+---
+
+
+
+Con base en la técnica de *modelaje de tópicos no supervisado*, las personas autoras clasificaron por temas específicos las solicitudes de información y estudiaron su comportamiento en el tiempo.
+
+&lt;div class="center"&gt;
+&lt;img src="img/estudio1b.PNG"
+width="600x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+
+---
+
+
+[**Aguilar-Gómez et al (2019)**](https://www.undp.org/latin-america/publications/follow-leader-public-health-messaging-and-containment-mobility-during-pandemic) estudiaron cómo el discurso de los líderes políticos afectó el cumplimiento de las medidas de sana distancia con base en 500 conferencias matutinas de AMLO y vespertinas de López Gatell.
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/estudio2b.PNG"
+width="800x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+---
+
+La estrategia de las autoras fue cruzar datos de geolocalización de teléfonos móviles y las muertes relacionadas con la COVID-19 con en análisis de texto: una combinación de *modelaje de tópicos* y *análisis de sentimientos*.
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/estudio2c.PNG"
+width="700x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+---
+
+
+[**Arceo-Gomez &amp; Campos-Vazquez (2019)**](https://www.sciencedirect.com/science/article/abs/pii/S0272775719300743) estudiaron 600 mil reseñas de profesoras y profesores universitarias en el sitio *MisProfesores.com*. Las mujeres reciben sistemáticamente calificaciones más bajas, son descritas por su apariencia y son tratadas con menos respeto.
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/estudio3.PNG"
+width="500x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+---
+
+
+[**Arceo-Gomez et al (2022)**](https://link.springer.com/article/10.1007/s12122-022-09331-4) estudiaron 2.5 millones de anuncios de trabajo en internet, de los cuáles 235 mil eran dirigidos a una identidad de género en particular. A las mujeres se les piden más características *comunales*: servicio, apariencia, etc.
+
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/estudio4b.PNG"
+width="300x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+---
+&lt;br&gt; &lt;/br&gt;
+
+Estas diferencias entre los anuncios se traducen en peores salarios 
+para las mujeres.
+
+
+.pull-left[
+
+&lt;img src="img/estudio4.PNG"
+width="600x"
+/&gt;&lt;br&gt;
+
+]
+
+
+.pull-right[
+
+&lt;img src="img/estudio4a.PNG"
+width="600x"
+/&gt;&lt;br&gt;
+
+]
+
+
+---
+&lt;br&gt; &lt;/br&gt;
+
+[**Lombana-Bermúdez et al. (2022)**](http://www.politicaygobierno.cide.edu/index.php/pyg/article/view/1494/1077) estudiaron casi 150 mil tuits de 70 mil usuarios para estudiar las cámaras de eco en redes sociales.
+
+
+&lt;div class="center"&gt;
+
+&lt;img src="img/estudio5.PNG"
+width="400x"
+/&gt;&lt;br&gt;
+
+&lt;/div&gt;
+
+
+---
+# Los 4 principios [Grimmer &amp; Stewart (2013)](https://web.stanford.edu/~jgrimmer/tad2.pdf)
+
+
+1. Todos los modelos cuantitativos del lenguaje son incorrectos, pero **algunos son útiles**.
+
+--
+
+2. Los métodos cuantitativos de texto amplifican los recursos y **expanden la capacidad humana**.
+
+--
+
+3. **No hay un *mejor método*** para el análisis automatizado de texto.
+
+--
+
+4. Hay que *validar*, _validar_ y volver a **validar**.
+
+
+
+---
+
+
+# Manos a la obra
+
+Vamos a hacer un breve ejercicio llamado *tokenización*. Este proceso consiste en separar nuestro texto en *tokens* y será casi siempre el primer paso para nuestro análisis de texto.
+
+Estas son las bibliotecas que vamos a utilizar para aprender *minería de texto*. 
+
+
+```r
+library(tidyverse) # Un viejo conocido
+library(readxl) # Porque una vida sin excel no es vida...
+
+library(tidytext) # Una navaja suiza para el procesamiento de texto
+library(quanteda) # Herramientas poderosas de análisis de texto
+library(tm) # El estándar para el trabajo de minería de texto
+
+library(wordcloud) # Gráficas de nubes de palabras
+```
+
+
+---
+
+# ¡Datos!
+
+Vamos a descargar los datos del programa [*Conóceles 2021*](https://candidaturas2021.ine.mx/), que se compone de las propuestas de las y los candidatos que compitieron en 2021, recolectada por el INE.
+
+
+```r
+# El enlace directo al .xls
+*url &lt;- "https://candidaturas2021.ine.mx/documentos/descargas/baseDatosCandidatos.xls"
+```
+
+---
+
+# ¡Datos!
+
+Vamos a descargar los datos del programa [*Conóceles 2021*](https://candidaturas2021.ine.mx/), que se compone de las propuestas de las y los candidatos que compitieron en 2021, recolectada por el INE.
+
+
+```r
+# El enlace directo al .xls
+url &lt;- "https://candidaturas2021.ine.mx/documentos/descargas/baseDatosCandidatos.xls" 
+
+#Descargar en la carpeta "datos"
+*download.file(url, destfile = "data/baseDatosCandidatos.xls", mode = "wb")
+```
+
+
+---
+
+# ¡Datos!
+
+Vamos a descargar los datos del programa [*Conóceles 2021*](https://candidaturas2021.ine.mx/), que se compone de las propuestas de las y los candidatos que compitieron en 2021, recolectada por el INE.
+
+
+```r
+# El enlace directo al .xls
+url &lt;- "https://candidaturas2021.ine.mx/documentos/descargas/baseDatosCandidatos.xls" 
+
+#Descargar en la carpeta "datos"
+download.file(url, destfile = "data/baseDatosCandidatos.xls", mode = "wb")
+
+# Leer datos
+*con21 &lt;- read_excel("data/baseDatosCandidatos.xls")
+```
+---
+
+# Filtros y selección
+
+Eligamos una entidad aleatoriamente... no sé... Nuevo León. Y luego seleccionemos sólo las variables de partido, candidatura, distrito, edad, género y las propuestas. Guardaremos el resultado en un objeto llamado `con21nl`.
+
+
+```r
+con21nl &lt;- con21 |&gt; 
+* filter(ENTIDAD == "NUEVO LEÓN" )
+```
+
+---
+
+# Filtros y selección
+
+Eligamos una entidad aleatoriamente... no sé... Nuevo León. Y luego seleccionemos sólo las variables de partido, candidatura, distrito, edad, género y las propuestas. Guardaremos el resultado en un objeto llamado `con21nl`.
+
+
+
+```r
+con21nl &lt;- con21 |&gt; 
+  filter(ENTIDAD == "NUEVO LEÓN" ) |&gt;
+* select(PARTIDO_COALICION, CANDIDATURA, DISTRITO,
+*        EDAD, GENERO, PROPUESTA_1:PROPUESTA_GENERO)
+```
+
+
+
+---
+
+# Tabla de insumo
+
+Así queda nuestra tabla filtrada y con nuestras variables de interés.
+
+
+
+
+
+```r
+glimpse(con21nl)
+```
+
+```
+## Rows: 208
+## Columns: 8
+## $ PARTIDO_COALICION &lt;chr&gt; "PARTIDO ACCIÓN NACIONAL", "PARTIDO ACCIÓN NACIONAL"…
+## $ CANDIDATURA       &lt;chr&gt; "DIPUTACIÓN FEDERAL MR", "DIPUTACIÓN FEDERAL MR", "D…
+## $ DISTRITO          &lt;chr&gt; "1-SANTA CATARINA", "1-SANTA CATARINA", "1-SANTA CAT…
+## $ EDAD              &lt;dbl&gt; 46, 45, 47, 50, 27, 34, 66, 55, 29, 31, 56, 26, 59, …
+## $ GENERO            &lt;chr&gt; "HOMBRE", "HOMBRE", "MUJER", "MUJER", "HOMBRE", "HOM…
+## $ PROPUESTA_1       &lt;chr&gt; "Crear una Comisión Ambiental para las Zonas Metropo…
+## $ PROPUESTA_2       &lt;chr&gt; "Recuperación de Fondos en materia de Seguridad (For…
+## $ PROPUESTA_GENERO  &lt;chr&gt; "Implementar estrategias para erradicar la violencia…
+```
+
+
+
+---
+
+# Pegar propuestas en una sola
+
+Vamos a pegar las tres propuestas: la **propuesta 1**, la **propuesta 2** y la **propuesta de género** (que en realidad se refiere a alguna propuesta *en materia de género o del grupo en situación de discriminación que representa*). Sobreescribiremos el objeto `con21nl` y eliminaremos lo sobrante.
+
+
+```r
+con21nl &lt;- con21nl |&gt; 
+  mutate(prop_pasted = str_c(  
+*   PROPUESTA_1, PROPUESTA_2, PROPUESTA_GENERO, sep = " "))
+```
+
+
+---
+
+
+# Pegar propuestas en una sola
+
+Vamos a pegar las tres propuestas: la **propuesta 1**, la **propuesta 2** y la **propuesta de género** (que en realidad se refiere a alguna propuesta *en materia de género o del grupo en situación de discriminación que representa*). Sobreescribiremos el objeto `con21nl` y eliminaremos lo sobrante.
+
+
+```r
+con21nl &lt;- con21nl |&gt; 
+  mutate(prop_pasted = str_c(  
+    PROPUESTA_1, PROPUESTA_2, PROPUESTA_GENERO, sep = " "))  |&gt; 
+* select(-contains("PROPUESTA_")) |&gt;
+  filter(!prop_pasted == "NA")
+```
+
+---
+
+
+# Pegar propuestas en una sola
+
+Vamos a pegar las tres propuestas: la **propuesta 1**, la **propuesta 2** y la **propuesta de género** (que en realidad se refiere a alguna propuesta *en materia de género o del grupo en situación de discriminación que representa*). Sobreescribiremos el objeto `con21nl` y eliminaremos lo sobrante.
+
+
+```r
+con21nl &lt;- con21nl |&gt; 
+  mutate(prop_pasted = str_c(  
+    PROPUESTA_1, PROPUESTA_2, PROPUESTA_GENERO, sep = " "))  |&gt; 
+  select(-contains("PROPUESTA_")) |&gt; 
+* filter(!prop_pasted == "NA")
+```
+
+
+---
+
+
+# Pegar propuestas en una sola
+
+Así se vería las primeras propuestas.
+
+
+```r
+con21nl$prop_pasted[1:5]
+```
+
+```
+## [1] "Crear una Comisión Ambiental para las Zonas Metropolitanas del Norte Recuperación de Fondos en materia de Seguridad (Fortaseg) y  el Fondo Metropolitano con reglas de operación etiquetadas para la movilidad integral. Implementar estrategias para erradicar la violencia de género que contemplen reformas y presupuesto etiquetado para tal fin"                                                                                                                                                                                                                                                                                                                                                                                     
+## [2] "SALUD: ABRIR CENTROS DE SALUD PARA PERSONAS CON CAPACIDADES DIFERENTES Y REHABILITACIÓN. ECONOMÍA: BUSCAR DE ATENDER EL DESEMPLEO. CREAR UN LUGAR EN DONDE SE INVITEN A GRUPOS DE PERSONAS EN EL QUE SE BRINDEN PLATICAS Y/O CONFERENCIAS Y DAR A CONOCER LA IMPORTANCIA QUE REPRESENTA ESTE TEMA, ASÍ COMO OTROS DE IGUAL IMPORTANCIA."                                                                                                                                                                                                                                                                                                                                                                                                  
+## [3] "Mis principales propuestas son en en tema de salud, tener más medicamentos, vacunas y mas centros de salud físicos y mentales. en temas de economía quiero impactar el bolsillo de las familias neolonesas. Tema de seguridad, protección a la mujer y que los ciudadanos puedan caminar por las calles sin miedo. Prevenir, Sancionar y Erradicar de toda forma la violencia hacia las niñas, niños y mujeres de nuestro estado, brindándoles el apoyo jurídico y económico que requieran para su protección."                                                                                                                                                                                                                           
+## [4] "Salud. Apoyar en el área de salud para que no exista él desbastó de medicamento, y apoyar en el tema de las vacunas para que toda la población esté vacunada tanto como la del covid y las diferentes vacunas para niños jóvenes y adultos. Seguridad. Trabajar en el tema de seguridad para que tengan buena capacitación todos los elementos y apoyar en el tema de las cámaras de seguridad tanto en la ciudad como en el equipamiento de los elementos. Para superar la discriminación un punto importante es el derecho a la igualdad de oportunidades y trato respecto del empleo y la ocupación. Es importante darle la oportunidad a todos y todas por igual hoy en día se está tomando mucho en cuenta eso para poder superarse."
+## [5] "Obligaciones  financieras y fiscales Trasparencia Total Implementar y favorecer Políticas públicas a favor de estos grupos\r\n"
+```
+
+
+---
+
+
+# *Desanidar* los tokens
+
+Vamos a contar las palabras usando nuestra *navaja suiza* y su comando estrella `unnest_tokens`.
+
+
+```r
+con21nl |&gt; 
+  unnest_tokens( 
+*   output = "palabras",
+    input = "prop_pasted", 
+    token = "words"
+  )
+```
+
+
+---
+
+
+# *Desanidar* los tokens
+
+Vamos a contar las palabras usando nuestra *navaja suiza* y su comando estrella `unnest_tokens`.
+
+
+```r
+con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+*   input = "prop_pasted",
+    token = "words"
+  )
+```
+
+
+
+
+---
+
+
+# *Desanidar* los tokens
+
+Vamos a contar las palabras usando nuestra *navaja suiza* y su comando estrella `unnest_tokens`.
+
+
+```r
+con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+*   token = "words"
+  )
+```
+
+
+
+
+---
+
+
+# El resultado es la *tokenización* de la tabla
+
+
+```
+## # A tibble: 8 × 6
+##   PARTIDO_COALICION       CANDIDATURA           DISTRITO    EDAD GENERO palabras
+##   &lt;chr&gt;                   &lt;chr&gt;                 &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;   
+## 1 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE crear   
+## 2 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE una     
+## 3 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE comisión
+## 4 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE ambient…
+## 5 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE para    
+## 6 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE las     
+## 7 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE zonas   
+## 8 PARTIDO ACCIÓN NACIONAL DIPUTACIÓN FEDERAL MR 1-SANTA C…    46 HOMBRE metropo…
+```
+
+
+---
+
+
+# Contamos los tokens y ordenamos de mayor a menor
+
+
+```r
+con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+* count(palabras, sort = T)
+```
+
+
+---
+
+
+# Contamos los tokens y ordenamos de mayor a menor
+
+
+```
+## # A tibble: 10 × 2
+##    palabras     n
+##    &lt;chr&gt;    &lt;int&gt;
+##  1 de        1205
+##  2 y          761
+##  3 la         656
+##  4 que        480
+##  5 en         465
+##  6 a          456
+##  7 para       399
+##  8 el         369
+##  9 los        333
+## 10 las        309
+```
+
+
+---
+
+
+# Primer dolor de cabeza: las *stopwords*
+
+
+```r
+tm::stopwords("es")[1:50]
+```
+
+```
+##  [1] "de"      "la"      "que"     "el"      "en"      "y"       "a"      
+##  [8] "los"     "del"     "se"      "las"     "por"     "un"      "para"   
+## [15] "con"     "no"      "una"     "su"      "al"      "lo"      "como"   
+## [22] "más"     "pero"    "sus"     "le"      "ya"      "o"       "este"   
+## [29] "sí"      "porque"  "esta"    "entre"   "cuando"  "muy"     "sin"    
+## [36] "sobre"   "también" "me"      "hasta"   "hay"     "donde"   "quien"  
+## [43] "desde"   "todo"    "nos"     "durante" "todos"   "uno"     "les"    
+## [50] "ni"
+```
+
+---
+
+
+# Filtramos las *stop words*
+
+
+```r
+con21nl |&gt; 
+  unnest_tokens( 
+    output = "palabras", 
+    input = "prop_pasted", 
+    token = "words" 
+  ) |&gt; 
+  count(palabras, sort = T) |&gt; 
+* filter(!palabras %in% tm::stopwords("es"))
+```
+
+
+---
+
+
+# Tenemos las 10 palabras más usadas en las propuestas para NL
+
+
+```
+## # A tibble: 10 × 2
+##    palabras      n
+##    &lt;chr&gt;     &lt;int&gt;
+##  1 mujeres     111
+##  2 salud        69
+##  3 género       66
+##  4 seguridad    66
+##  5 violencia    64
+##  6 personas     62
+##  7 país         60
+##  8 derechos     53
+##  9 educación    48
+## 10 méxico       46
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(60000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!--Hat-tip: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/-->
+<style>
+.logo {
+  background-image: url(img/logo-title-slide.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 110px;
+  height: 128px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
